@@ -15,9 +15,14 @@ class Estado extends Model
     {
         return $this->hasMany(Municipio::class, 'estados_id', 'id');
     }
-
     public function ciudades(): HasMany
     {
         return $this->hasMany(Ciudad::class, 'estados_id', 'id');
     }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'estados_id', 'id');
+    }
+
 }

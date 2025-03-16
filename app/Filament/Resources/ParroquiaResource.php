@@ -18,6 +18,8 @@ class ParroquiaResource extends Resource
     protected static ?string $model = Parroquia::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Territorio';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
