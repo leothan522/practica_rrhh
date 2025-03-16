@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\ParroquiaResource\Pages;
+use App\Filament\Resources\ParroquiaResource\RelationManagers;
+use App\Models\Parroquia;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,29 +13,24 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class ParroquiaResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Parroquia::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationLabel = "Usuarios";
-
-    protected static ?string $label = "Usuarios";
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Select::make('municipios_id')
+                    ->relationship('municipio', 'nombre')
+                    ->searchable()
+                    ->required(),
+                /*Forms\Components\TextInput::make('municipios_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                    ->numeric(),*/
+                Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -45,13 +40,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('municipio.nombre')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -84,9 +76,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListParroquias::route('/'),
+            'create' => Pages\CreateParroquia::route('/create'),
+            'edit' => Pages\EditParroquia::route('/{record}/edit'),
         ];
     }
 }
